@@ -1,5 +1,5 @@
 # Overview
-The current management, subscription, and resource group infrastructure is currently built or nested underneath the following management groups as such. Azure Lighthouse is noit in play at this time.  
+The current management, subscription, and resource group infrastructure is currently built or nested underneath the following management groups as such. Azure Lighthouse is not in play at this time.  
 Review Microsoft Azure Landing Zone Deployment for a better understanding on the lines of division.  
 https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/   
 
@@ -26,13 +26,14 @@ Eventually logging of states and a CI/CD platform is to be implmented.
 
 ### USWest Connectivity Hub 
 
-- Connectivity Subscription Group
-   - USWest Resource Group Pool
-        - Networking Resource Group
-            - USWest Hub VNET
-              - Premium Firewall Loadout
-              - DNS
-              - Peering
+- root-mg/domain-mg/platform-mg/connectivity-mg/
+    - Connectivity Subscription Group
+       - USWest Resource Group Pool
+            - Networking Resource Group
+                - USWest Hub VNET
+                  - Premium Firewall Loadout
+                  - DNS
+                  - Peering
 
 ### USWEST Corp Site 1
 
