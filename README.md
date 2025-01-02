@@ -27,9 +27,9 @@ Eventually logging of states and a CI/CD platform is to be implmented.
 ### USWest Connectivity Hub 
 
 - root-mg/domain-mg/platform-mg/connectivity-mg/
-    - Connectivity Subscription Group
-       - USWest Resource Group Pool
-            - Networking Resource Group
+    - Connectivity Subscription Group (connectivity-sg)
+       - USWest Resource Group Pool (uswest-rg-pool)
+            - Networking Resource Group (uswest-hub-networking-rg)
                 - USWest Hub VNET
                   - Premium Firewall Loadout
                   - DNS
