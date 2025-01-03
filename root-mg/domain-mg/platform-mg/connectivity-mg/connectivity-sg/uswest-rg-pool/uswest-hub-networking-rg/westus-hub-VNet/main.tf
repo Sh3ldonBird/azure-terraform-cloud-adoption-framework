@@ -8,42 +8,43 @@ provider "azurerm" {
 
 locals {
   regions = {
-    primary   = "westus" #syntax check
-    secondary = "centralus" #?
+    primary   = "West US" #syntax check
+    secondary = "Central US"
   }
 }
 
+# Abstract into creating pre-defined resource groups per region to track states better.
 resource "azurerm_resource_group" "hub_rg" {
   for_each = local.regions
 
   location = each.value
-  name     = "rg-hub-${each.value}-${random_pet.rand.id}"
+  name     = "${each.value}-hub-rg-${random_pet.rand.id}"
 }
 
 resource "random_pet" "rand" {}
 
 module "hub_mesh" {
-  source = "./.." # Figure out source and reroute to "local-modules"
+  source = "./.." # Change source to AVM repo or keep it local.
   hub_virtual_networks = {
     primary = {
-      name                            = "USWest-hub-dev-vnet" #rename?
-      address_space                   = ["10.0.0.0/22"]
+      name                            = "westus-hub-vnet"
+      address_space                   = ["10.77.0.0/22"]
       location                        = local.regions.primary
-      resource_group_name             = azurerm_resource_group.hub_rg["primary"].name
+      resource_group_name             = azurerm_resource_group.hub_rg["primary"].name #pulls naming convention from "hub_rg" resource.
       resource_group_creation_enabled = false
       resource_group_lock_enabled     = false
       mesh_peering_enabled            = true  # Is this just for the hubs? make sure that it doesn't effect the spokes too.
-      route_table_name                = "USWest-hub-dev-rt-primary" #renamed. Check dependencies.
-      routing_address_space           = ["10.0.0.0/16"]
+      route_table_name                = "westus-hub-rt-primary" #renamed. Check dependencies.
+      routing_address_space           = ["10.77.0.0/16"]
       firewall = {
-        subnet_address_prefix = "10.0.0.0/26"
-        name                  = "fw-hub-primary" #renamed. Check dependencies.
+        subnet_address_prefix = "10.77.0.0/26"
+        name                  = "westus-pfw-hub-primary" #renamed. Check dependencies.
         sku_name              = "AZFW_VNet" #?
         sku_tier              = "Premium" #changed to premium
         zones                 = ["1", "2", "3"] #?
         default_ip_configuration = {
           public_ip_config = {
-            name  = "pip-pfw-uswest-dev-hub-primary" #? Configure prior or in another module?
+            name  = "pip-pfw-westus-hub-primary" #? Configure prior or in another module?
             zones = ["1", "2", "3"]
           }
         }
@@ -57,21 +58,21 @@ module "hub_mesh" {
       subnets = { # additional subnets needed? More than likely.
         bastion = {
           name             = "AzureBastionSubnet"
-          address_prefixes = ["10.0.0.64/26"]
+          address_prefixes = ["10.77.0.64/26"]
           route_table = {
             assign_generated_route_table = false
           }
         }
         gateway = {
           name             = "GatewaySubnet"
-          address_prefixes = ["10.0.0.128/27"]
+          address_prefixes = ["10.77.0.128/27"]
           route_table = {
             assign_generated_route_table = false
           }
         }
         user = {
           name             = "hub-user-subnet"
-          address_prefixes = ["10.0.2.0/24"]
+          address_prefixes = ["10.77.2.0/24"]
         }
       }
     }

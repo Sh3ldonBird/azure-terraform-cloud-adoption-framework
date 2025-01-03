@@ -1,6 +1,0 @@
-Abstract out resource group creation and management. I don't like randomly created resource groups for "ease of use."
-
-
-Add in DNS configurations
-
-Remove subnetting calls for local traffic
