@@ -1,0 +1,30 @@
+## root-mg/domain-mg/platform-mg/connectivity-mg/connectivity-sg  
+### Primary  
+Clean up folders and tf files using 'terraform plan'  
+
+### Secondary  
+Abstract out resource group creation and management. I don't like randomly created resource groups for "ease of use."  
+Add in DNS configurations  
+Remove subnetting calls for local traffic  
+Rearrange modules to align resource creation.  
+    - move firewall to firewall.tf etc.  
+
+
+## root-mg/domain-mg/landing-zones-mg/corp-mg/lz-corp-sites-sg/lz-corp-site01-rg-pool  
+### /lz-corp-sites-compute-rg  
+- [] Create 3 VMs that adhere to the west us hub vnet
+- [] figure out redundancy to central us
+### /lz-corp-sites-networking-rg  
+- [] Create and peer a VNet to the West US hub vnet  
+- [] Figure out redundancy with central us hub vnet
+### /lz-corp-sites-security  
+- [] create NSG's for VMs  
+- [] add them to ASGs  
+### /lz-corp-sites-identity  
+- [] create azure key vault here or in identity within platform-mg depending on complexity and time  
+
+## root-mg/domain-mg/landing-zones-mg/corp-mg/lz-corp-sites-sg/lz-corp-sites-overall
+### /lz-corp-sites-monitoring
+- [] create log analytics workspace
+- [] create MS Sentinel instance for corp sites
+- [] Add in Azure Function App via crowdstrike (check api scrips from crowdstrike)

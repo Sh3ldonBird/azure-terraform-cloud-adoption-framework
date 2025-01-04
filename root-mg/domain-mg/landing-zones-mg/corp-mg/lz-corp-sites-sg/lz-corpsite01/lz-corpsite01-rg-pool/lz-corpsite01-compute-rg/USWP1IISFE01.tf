@@ -35,7 +35,7 @@ module "regions" {
 
 locals {
   #deployment_region = module.regions.regions[random_integer.region_index.result].name
-  deployment_region = "uswest" #temporarily pinning on single region 
+  deployment_region = "West US" #temporarily pinning on single region 
   tags = {
     scenario = "Default"
   }
@@ -63,63 +63,63 @@ resource "azurerm_resource_group" "this_rg" {
   tags     = local.tags
 }
 
-resource "azurerm_virtual_network" "this_vnet" {
-  address_space       = ["10.0.0.0/16"]
-  location            = azurerm_resource_group.this_rg.location
-  name                = module.naming.virtual_network.name_unique
-  resource_group_name = azurerm_resource_group.this_rg.name
-  tags                = local.tags
-}
-
-resource "azurerm_subnet" "this_subnet_1" {
-  address_prefixes     = ["10.0.1.0/24"]
-  name                 = "${module.naming.subnet.name_unique}-1"
-  resource_group_name  = azurerm_resource_group.this_rg.name
-  virtual_network_name = azurerm_virtual_network.this_vnet.name
-}
-
-resource "azurerm_subnet" "this_subnet_lb" {
-  address_prefixes     = ["10.0.2.0/24"]
-  name                 = "${module.naming.subnet.name_unique}-lb"
-  resource_group_name  = azurerm_resource_group.this_rg.name
-  virtual_network_name = azurerm_virtual_network.this_vnet.name
-}
-
-resource "azurerm_subnet" "this_subnet_2" {
-  address_prefixes     = ["10.0.3.0/24"]
-  name                 = "${module.naming.subnet.name_unique}-2"
-  resource_group_name  = azurerm_resource_group.this_rg.name
-  virtual_network_name = azurerm_virtual_network.this_vnet.name
-}
-
-
-# Uncomment this section if you would like to include a bastion resource with this example.
-resource "azurerm_subnet" "bastion_subnet" {
-  address_prefixes     = ["10.0.4.0/24"]
-  name                 = "AzureBastionSubnet"
-  resource_group_name  = azurerm_resource_group.this_rg.name
-  virtual_network_name = azurerm_virtual_network.this_vnet.name
-}
-
-resource "azurerm_public_ip" "bastionpip" {
-  allocation_method   = "Static"
-  location            = azurerm_resource_group.this_rg.location
-  name                = module.naming.public_ip.name_unique
-  resource_group_name = azurerm_resource_group.this_rg.name
-  sku                 = "Standard"
-}
-
-resource "azurerm_bastion_host" "bastion" {
-  location            = azurerm_resource_group.this_rg.location
-  name                = module.naming.bastion_host.name_unique
-  resource_group_name = azurerm_resource_group.this_rg.name
-
-  ip_configuration {
-    name                 = "${module.naming.bastion_host.name_unique}-ipconf"
-    public_ip_address_id = azurerm_public_ip.bastionpip.id
-    subnet_id            = azurerm_subnet.bastion_subnet.id
-  }
-}
+#resource "azurerm_virtual_network" "this_vnet" {
+#  address_space       = ["10.0.0.0/16"]
+#  location            = azurerm_resource_group.this_rg.location
+#  name                = module.naming.virtual_network.name_unique
+#  resource_group_name = azurerm_resource_group.this_rg.name
+#  tags                = local.tags
+#}
+#
+#resource "azurerm_subnet" "this_subnet_1" {
+#  address_prefixes     = ["10.0.1.0/24"]
+#  name                 = "${module.naming.subnet.name_unique}-1"
+#  resource_group_name  = azurerm_resource_group.this_rg.name
+#  virtual_network_name = azurerm_virtual_network.this_vnet.name
+#}
+#
+#resource "azurerm_subnet" "this_subnet_lb" {
+#  address_prefixes     = ["10.0.2.0/24"]
+#  name                 = "${module.naming.subnet.name_unique}-lb"
+#  resource_group_name  = azurerm_resource_group.this_rg.name
+#  virtual_network_name = azurerm_virtual_network.this_vnet.name
+#}
+#
+#resource "azurerm_subnet" "this_subnet_2" {
+#  address_prefixes     = ["10.0.3.0/24"]
+#  name                 = "${module.naming.subnet.name_unique}-2"
+#  resource_group_name  = azurerm_resource_group.this_rg.name
+#  virtual_network_name = azurerm_virtual_network.this_vnet.name
+#}
+#
+#
+## Uncomment this section if you would like to include a bastion resource with this example.
+#resource "azurerm_subnet" "bastion_subnet" {
+#  address_prefixes     = ["10.0.4.0/24"]
+#  name                 = "AzureBastionSubnet"
+#  resource_group_name  = azurerm_resource_group.this_rg.name
+#  virtual_network_name = azurerm_virtual_network.this_vnet.name
+#}
+#
+#resource "azurerm_public_ip" "bastionpip" {
+#  allocation_method   = "Static"
+#  location            = azurerm_resource_group.this_rg.location
+#  name                = module.naming.public_ip.name_unique
+#  resource_group_name = azurerm_resource_group.this_rg.name
+#  sku                 = "Standard"
+#}
+#
+#resource "azurerm_bastion_host" "bastion" {
+#  location            = azurerm_resource_group.this_rg.location
+#  name                = module.naming.bastion_host.name_unique
+#  resource_group_name = azurerm_resource_group.this_rg.name
+#
+#  ip_configuration {
+#    name                 = "${module.naming.bastion_host.name_unique}-ipconf"
+#    public_ip_address_id = azurerm_public_ip.bastionpip.id
+#    subnet_id            = azurerm_subnet.bastion_subnet.id
+#  }
+#}
 
 
 data "azurerm_client_config" "current" {}
@@ -151,27 +151,27 @@ module "avm_res_keyvault_vault" {
   tags = local.tags
 }
 
-resource "azurerm_storage_account" "app_account" {
-  account_replication_type = "ZRS"
-  account_tier             = "Standard"
-  location                 = azurerm_resource_group.this_rg.location
-  name                     = module.naming.storage_account.name_unique
-  resource_group_name      = azurerm_resource_group.this_rg.name
-}
-
-resource "azurerm_storage_container" "app_container" {
-  name                  = module.naming.storage_container.name_unique
-  storage_account_name  = azurerm_storage_account.app_account.name
-  container_access_type = "blob"
-}
-
-resource "azurerm_storage_blob" "app" {
-  name                   = "install-script.ps1"
-  storage_account_name   = azurerm_storage_account.app_account.name
-  storage_container_name = azurerm_storage_container.app_container.name
-  type                   = "Block"
-  source                 = "${path.module}/install-vscode.ps1"
-}
+#resource "azurerm_storage_account" "app_account" {
+#  account_replication_type = "ZRS"
+#  account_tier             = "Standard"
+#  location                 = azurerm_resource_group.this_rg.location
+#  name                     = module.naming.storage_account.name_unique
+#  resource_group_name      = azurerm_resource_group.this_rg.name
+#}
+#
+#resource "azurerm_storage_container" "app_container" {
+#  name                  = module.naming.storage_container.name_unique
+#  storage_account_name  = azurerm_storage_account.app_account.name
+#  container_access_type = "blob"
+#}
+#
+#resource "azurerm_storage_blob" "app" {
+#  name                   = "install-script.ps1"
+#  storage_account_name   = azurerm_storage_account.app_account.name
+#  storage_container_name = azurerm_storage_container.app_container.name
+#  type                   = "Block"
+#  source                 = "${path.module}/install-vscode.ps1"
+#}
 
 #blob content = file
 
@@ -258,7 +258,7 @@ resource "azurerm_maintenance_configuration" "test_maintenance_config" {
   }
 }
 
-module "testvm" {
+module "IIS-FE-VM" {
   #source = "../../"
   source = "Azure/avm-res-compute-virtualmachine/azurerm"
   #version = "0.17.0
@@ -268,7 +268,7 @@ module "testvm" {
   location            = azurerm_resource_group.this_rg.location
   resource_group_name = azurerm_resource_group.this_rg.name
   os_type             = "Windows"
-  name                = module.naming.virtual_machine.name_unique
+  name                = "USWP1IISFE01" #module.naming.virtual_machine.name_unique
   #admin_credential_key_vault_resource_id                 = module.avm_res_keyvault_vault.resource_id
   sku_size                                               = module.get_valid_sku_for_deployment_region.sku
   encryption_at_host_enabled                             = true
@@ -293,6 +293,7 @@ module "testvm" {
     version   = "latest"
   }
 
+# Call output from lz-corpsite01-network-rg to pull in ipconfig info
   network_interfaces = {
     network_interface_1 = {
       name = module.naming.network_interface.name_unique
@@ -313,13 +314,15 @@ module "testvm" {
     }
   }
 
-  gallery_applications = {
-    vscode = {
-      version_id = azurerm_gallery_application_version.test_app_version.id
-      order      = 1
-    }
-  }
+# Gallery application unneeded at the moment
+#  gallery_applications = {
+#    vscode = {
+#      version_id = azurerm_gallery_application_version.test_app_version.id
+#      order      = 1
+#    }
+#  }
 
+# Verify configuration
   azure_backup_configurations = {
     backup_config = {
       resource_group_name       = azurerm_recovery_services_vault.test_vault.resource_group_name
