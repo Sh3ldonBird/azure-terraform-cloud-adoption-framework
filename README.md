@@ -99,3 +99,22 @@ I'm still undecided on compute resource buildout as I'm honing in on what type o
 #### rg-pool(modules)/network-rg
 - hub-to-spoke.tf defined the subnets, UDRs, peerings etc. for the corpsite01 spoke vnet. 
 - eventually I want to bring it up most of the values into the root variable.tf file.  
+
+##### NSGs(Network Security Groups) to implement (WIP)
+Application Security Groups will come into play after testing NSGs.
+###### Production Server Workflow
+
+| Action | Name           | Source | Destination | Port         | Note                                                                         |
+| ------ | -------------- | ------ | ----------- | ------------ | ---------------------------------------------------------------------------- |
+| Allow  | AccAPPtoDB     | AccAPP | DBserver    | 1433 (MSSQL) | Authenticated via Entra ID  (Windows AD) service account                     |
+| Allow  | AccAPPtoIIS-FE | AccAPP | IIS-FE      | 22 (SSH)     | Custom API app with Entra ID  (Windows AD) service account integration used. |
+| Allow  | IIS-FEtoAccAPP | IIS-FE | AccAPP      | 22 (SSH)     | Custom API app Entra ID  (Windows AD) with service account integration used. |
+| Allow  | IIS-FEtoDB     | IIS-FE | DBserver    | 1433 (MSSQL) | Authenticated via Entra ID  (Windows AD) service account                     |
+| Deny   | DenyAll        | Any    | Any         | Any          |                                                                              |
+###### Employee VM Pool
+| Action | Name           | Source     | Destination | Port     | Note                                                                                    |
+| ------ | -------------- | ---------- | ----------- | -------- | --------------------------------------------------------------------------------------- |
+| Allow  | VMpoolToAccAPP | UserVMpool | APPserver   | 22 (SSH) | Connected via credentials made on AccAPP via Custom Terminal App                        |
+| Allow  | VMpoolToIIS-FE | UserVMpool | IIS-FE      | 443      | To log into IIS-FE website. <br>Port 80 redirect in play.                               |
+| Allow  | Internet       | Internet   | VMpool      | 80, 443  | Internet connection for VMs. <br>I'd cut it if it wouldn't confuse or hamper employees. |
+| Deny   | DenyAll        | Any        | Any         | Any      |                                                                                         |
