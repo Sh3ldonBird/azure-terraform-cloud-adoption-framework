@@ -71,8 +71,8 @@ module "lz-corpsite01-spoke-vnet" {
 
   name                = "lz-corpsite01-spoke-vnet" #"vnet-spoke1-${random_pet.rand.id}"
   address_space       = ["192.168.0.0/16"]
-  resource_group_name = azurerm_resource_group.corp-sites-spoke01.name
-  location            = azurerm_resource_group.corp-sites-spoke01.location
+  resource_group_name = module.parent_resource_groups.resource_groups_info.network_rg.name #azurerm_resource_group.corp-sites-spoke01.name
+  location            = module.parent_resource_groups.resource_groups_info.network_rg.location #azurerm_resource_group.corp-sites-spoke01.location
 
   # Eventually peer only specific subnets
   peerings = { 

@@ -104,7 +104,7 @@ module "hub_mesh" {
 #          }
         }
       AzureFWSubnet = {
-        name             = "AzureFierewallManagementSubnet" # needed for premium AZFW sku
+        name             = "AzureFirewallManagementSubnet" # needed for premium AZFW sku
         address_prefixes = ["10.77.0.64/26"]
       }
     }
@@ -132,36 +132,36 @@ module "hub_mesh" {
       }
     }
   }
-    secondary = { # Rename and ensure this is for resiliency not for a separate landing zone. 
-                  # I'm configuring a separate landing zone for that. 
-      name                            = "vnet-hub-secondary"
-      address_space                   = ["10.1.0.0/22"]
-      location                        = local.regions.secondary
-      resource_group_name             = azurerm_resource_group.hub_rg["secondary"].name
-      resource_group_creation_enabled = false
-      resource_group_lock_enabled     = false
-      mesh_peering_enabled            = true
-      route_table_name                = "rt-hub-secondary"
-      routing_address_space           = ["10.1.0.0/16"]
-      firewall = {
-        subnet_address_prefix = "10.1.0.0/26"
-        name                  = "fw-hub-secondary"
-        sku_name              = "AZFW_Hub" #changed from AZFW_VNet
-        sku_tier              = "Standard"
-        zones                 = ["1", "2", "3"]
-        default_ip_configuration = {
-          public_ip_config = {
-            name  = "pip-pfw-hub-secondary"
-            zones = ["1", "2", "3"]
-          }
-        }
-        firewall_policy = {
-          name = "fwp-hub-secondary"
-          dns = {
-            proxy_enabled = true
-          }
-        }
-      }
-    }
-  }
-}
+#    secondary = { # Rename and ensure this is for resiliency not for a separate landing zone. 
+#                  # I'm configuring a separate landing zone for that. 
+#      name                            = "vnet-hub-secondary"
+#      address_space                   = ["10.1.0.0/22"]
+#      location                        = local.regions.secondary
+#      resource_group_name             = azurerm_resource_group.hub_rg["secondary"].name
+#      resource_group_creation_enabled = false
+#      resource_group_lock_enabled     = false
+#      mesh_peering_enabled            = true
+#      route_table_name                = "rt-hub-secondary"
+#      routing_address_space           = ["10.1.0.0/16"]
+#      firewall = {
+#        subnet_address_prefix = "10.1.0.0/26"
+#        name                  = "fw-hub-secondary"
+#        sku_name              = "AZFW_Hub" #changed from AZFW_VNet
+#        sku_tier              = "Standard"
+#        zones                 = ["1", "2", "3"]
+#        default_ip_configuration = {
+#          public_ip_config = {
+#            name  = "pip-pfw-hub-secondary"
+#            zones = ["1", "2", "3"]
+#          }
+#        }
+#        firewall_policy = {
+#          name = "fwp-hub-secondary"
+#          dns = {
+#            proxy_enabled = true
+#          }
+#        }
+#      }
+#    }
+#  }
+#}

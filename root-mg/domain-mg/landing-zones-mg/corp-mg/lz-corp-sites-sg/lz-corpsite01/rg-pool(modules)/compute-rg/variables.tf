@@ -1,6 +1,6 @@
 # Compute Variables
 variable "vm_info" {
-  description = "Naming convention for each VM"
+  description = "Configuration info for each VM"
   type        = map(object({
     name                = string
     network_interface_1 = optional(string)
