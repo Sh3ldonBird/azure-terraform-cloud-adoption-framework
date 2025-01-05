@@ -2,6 +2,8 @@
 The overall goal of this project is to utilize Terraform to build out a home lab within a Microsoft Azure Tenant using Microsoft Azure's CAF (Cloud Adoption Framework) best practices. 
 Eventually logging of states and a CI/CD platform is to be implmented.  
 
+https://github.com/Azure/terraform-azurerm-caf-enterprise-scale/wiki
+
 The current management, subscription, and resource group infrastructure is currently built or nested underneath the following management groups as such. Azure Lighthouse is not in play at this time.  
 Review Microsoft Azure Landing Zone Deployment for a better understanding on the lines of division.  
 https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/landing-zone/   
@@ -37,7 +39,7 @@ Eventually the goal is to create modules from them with the templates as main.tf
                   - DNS  
                   - Peering  
 
-## Current status
+## Terraform Module Progress
 The configuration needed at the moment doesn't call for a modular approach though it may later on.  
 
 ### Main.tf
