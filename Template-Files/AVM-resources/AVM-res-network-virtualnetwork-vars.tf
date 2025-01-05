@@ -1,3 +1,5 @@
+# https://github.com/Azure/terraform-azurerm-avm-res-network-virtualnetwork/blob/main/variables.tf
+
 variable "address_space" {
   type        = set(string)
   description = "(Optional) The address spaces applied to the virtual network. You can supply more than one address space."
