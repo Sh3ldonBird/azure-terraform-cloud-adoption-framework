@@ -1,3 +1,6 @@
+#TODO
+#Build out variable files within compute-rg & network-rg to use this variable file to build out everything. This way the modules will do what they need to do. I'll be able to utilize this module with other setups thiw way as well.  
+
 ### Compute Variables
 variable "vm_info" {
   description = "Naming convention for each VM"
