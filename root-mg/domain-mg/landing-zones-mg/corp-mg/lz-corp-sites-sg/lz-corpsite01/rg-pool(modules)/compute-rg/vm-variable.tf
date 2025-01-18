@@ -1,3 +1,6 @@
+# TODO
+# Convert variables entered to reference the root variable.tf (rename compute-rg.tf?) file to make more modular.
+
 ######################################################################################################
 # Cookie Cutter Build for Windows VM with security best practices in mind
 #
